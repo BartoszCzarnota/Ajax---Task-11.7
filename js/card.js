@@ -18,7 +18,7 @@ function Card(id, name) {
 		});
 	// konstruowanie elementu karty
 		$card.append($cardDelete);
-		$cardDescription.text(self.description);
+		$cardDescription.text(self.name);
 		$card.append($cardDescription);
 	// zwracanie stworzonej karty
 		return $card;
