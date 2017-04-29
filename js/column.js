@@ -2,26 +2,26 @@
 function Column(id, name){	
 	var self = this;
 	this.id = id;
-	this.name = name;
-	this.$element = createColumn();
+	this.name = name || 'Nie podano nazwy';
+	this.element = createColumn();
 	
 
 	function createColumn(){
 	// tworzenie elementów składowych kolumny
-		var $column = $('<div>').addClass('column');
-		var $columnTitle = $('<h2>').addClass('column-title').text(self.name);
-		var $columnBtns = $('<div>').addClass('column-btns');
-		var $columnCardList = $('<ul>').addClass('column-card-list');
-		var $columnAddCard = $('<button>').addClass('add-card').text('Dodaj kartę');
-		var $columnDelete = $('<button>').addClass('btn-delete-column').text('Usuń kolumnę');
+		var column = $('<div>').addClass('column');
+		var columnTitle = $('<h2>').addClass('column-title').text(self.name);
+		var columnBtns = $('<div>').addClass('column-btns');
+		var columnCardList = $('<ul>').addClass('column-card-list');
+		var columnAddCard = $('<button>').addClass('add-card').text('Dodaj kartę');
+		var columnDelete = $('<button>').addClass('btn-delete-column').text('Usuń kolumnę');
 		// podpinanie odpowiednich zdarzeń
-		$columnDelete.click(function(){
+		columnDelete.click(function(){
 			self.deleteColumn();
 		});
-		$columnAddCard.click(function(event){
+		columnAddCard.click(function(event){
 			var cardName = prompt("Wpisz nazwę karty");
 			event.preventDefault();
-			self.createCard(new Card(cardName));
+			//self.createCard(new Card(cardName)); it's unnecessary
 			$.ajax({
 				url: baseUrl + '/card',
 				method: 'POST',
@@ -36,18 +36,18 @@ function Column(id, name){
 			});
 		});
 	// konstruowanie elementu kolumny
-		$column.append($columnTitle)
-		$column.append($columnBtns)
-		$columnBtns.append($columnAddCard)
-		$columnBtns.append($columnDelete)
-		$column.append($columnCardList);
+		column.append(columnTitle)
+		column.append(columnBtns)
+		columnBtns.append(columnAddCard)
+		columnBtns.append(columnDelete)
+		column.append(columnCardList);
 	// zwracanie stworzonej listy
-		return $column;
+		return column;
 	}	
 }	
 Column.prototype = {
 	createCard: function(card) {
-		this.$element.children('ul').append(card.$element);
+		this.element.children('ul').append(card.element);
 	},
 	deleteColumn: function() {
 		var self = this;
@@ -55,7 +55,7 @@ Column.prototype = {
 			url: baseUrl + '/column/' + self.id,
 			method: 'DELETE',
 			success: function(response){
-				self.$element.remove();
+				self.element.remove();
 			}
 		});
 	}
